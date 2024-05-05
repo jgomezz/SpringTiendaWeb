@@ -1,6 +1,11 @@
 package pe.edu.tecsup.tienda.webs;
 
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -12,6 +17,10 @@ import pe.edu.tecsup.tienda.entities.Producto;
 import pe.edu.tecsup.tienda.services.CategoriaService;
 import pe.edu.tecsup.tienda.services.ProductoService;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +28,9 @@ import java.util.List;
 @RequestMapping("/productos")
 @Controller
 public class ProductoController {
+
+    @Value("${app.storage.path}")
+    private String STORAGEPATH;
 
     CategoriaService categoriaService;
 
@@ -59,14 +71,14 @@ public class ProductoController {
                         RedirectAttributes redirectAttrs) throws Exception{
         log.info("call store(producto: " + producto + ")");
 
-        /*if(file != null && !file.isEmpty()) {
+        if(file != null && !file.isEmpty()) {
             String filename = System.currentTimeMillis() + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
             producto.setImagen_nombre(filename);
             if(Files.notExists(Paths.get(STORAGEPATH))){
                 Files.createDirectories(Paths.get(STORAGEPATH));
             }
             Files.copy(file.getInputStream(), Paths.get(STORAGEPATH).resolve(filename), StandardCopyOption.REPLACE_EXISTING);
-        }*/
+        }
 
         producto.setCreado(new Date());
         producto.setEstado(1);
@@ -78,5 +90,24 @@ public class ProductoController {
         return "redirect:/productos";
     }
 
+    @GetMapping("/images/{filename:.+}")
+    public ResponseEntity<Resource> images(@PathVariable String filename) throws Exception{
+        log.info("call images(filename: " + filename + ")");
 
+        Path path = Paths.get(STORAGEPATH).resolve(filename);
+        log.info("Path: " + path);
+
+        if(!Files.exists(path)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Resource resource = new UrlResource(path.toUri());
+        log.info("Resource: " + resource);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\""+resource.getFilename()+"\"")
+                .header(HttpHeaders.CONTENT_TYPE, Files.probeContentType(Paths.get(STORAGEPATH).resolve(filename)))
+                .header(HttpHeaders.CONTENT_LENGTH, String.valueOf(resource.contentLength()))
+                .body(resource);
+    }
 }
