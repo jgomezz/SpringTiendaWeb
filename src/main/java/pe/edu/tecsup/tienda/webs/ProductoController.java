@@ -110,4 +110,15 @@ public class ProductoController {
                 .header(HttpHeaders.CONTENT_LENGTH, String.valueOf(resource.contentLength()))
                 .body(resource);
     }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id, RedirectAttributes redirectAttrs) throws Exception {
+        log.info("edit delete(id: " + id + ")");
+
+        productoService.deleteById(id);
+
+        redirectAttrs.addFlashAttribute("message", "Registro eliminado correctamente");
+
+        return "redirect:/productos";
+    }
 }
