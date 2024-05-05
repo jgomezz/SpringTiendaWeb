@@ -1,24 +1,40 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" >
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/default :: layout(~{::title}, ~{::assets}, ~{::nav}, ~{::content})}">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Lista de Productos</title>
+
+    <th:block th:fragment="assets">
+    </th:block>
+
 </head>
 <body>
-<table border="1">
-    <thead>
-    <tr>
-        <th>Nombre</th>
-        <th>Precio</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="producto : ${productos}">
-        <td th:text="${producto.nombre}"/>
-        <td th:text="${producto.precio}"/>
-    </tr>
-    </tbody>
-</table>
+
+    <nav th:fragment="nav" aria-label="breadcrumb">
+        <ol class="breadcrumb my-3">
+            <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="#">Mantenimiento</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Productos</li>
+        </ol>
+    </nav>
+
+    <th:block th:fragment="content">
+        <table border="1">
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Precio</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="producto : ${productos}">
+                <td th:text="${producto.nombre}"/>
+                <td th:text="${producto.precio}"/>
+            </tr>
+            </tbody>
+        </table>
+    </th:block>
+
 </body>
 </html>
