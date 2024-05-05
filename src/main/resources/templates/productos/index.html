@@ -20,20 +20,47 @@
     </nav>
 
     <th:block th:fragment="content">
-        <table border="1">
-            <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Precio</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="producto : ${productos}">
-                <td th:text="${producto.nombre}"/>
-                <td th:text="${producto.precio}"/>
-            </tr>
-            </tbody>
-        </table>
+
+        <div class="card">
+            <div class="card-header">
+                Lista de Productos
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless table-striped mb-0">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Categor&iacute;a</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Image</th>
+                        <th width="300">Acciones</th>
+                    </tr>
+                    </thead>
+                        <tr th:each="producto : ${productos}">
+                            <td th:text="${producto.id}"/>
+                            <td th:text="${producto.categoria.nombre}"/>
+                            <td th:text="${producto.nombre}"/>
+                            <td th:text="${'S/' + producto.precio}"/>
+                            <td th:text="${producto.stock}"/>
+                            <td></td>
+                            <td class="text-left">
+                                <a th:href="@{/productos/show/} + ${producto.id}" class="btn btn-warning btn-sm"><i class="fa fa-eye"></i> Mostrar</a>
+                                <a th:href="@{/productos/edit/} + ${producto.id}" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Editar</a>
+                                <a th:href="@{/productos/delete/} + ${producto.id}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Eliminar</a>
+                            </td>
+                        </tr>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <a th:href="@{/productos/create}" class="btn btn-success"><i class="fa fa-plus"></i> Nuevo</a>
+            </div>
+        </div>
+
     </th:block>
 
 </body>
