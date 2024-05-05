@@ -23,6 +23,8 @@ public class ProductoController {
     @GetMapping("/productos")
     public String index(Model model) {
 
+        log.info("Call index()..!");
+
         return "productos/index";
     }
 }
