@@ -47,7 +47,7 @@
                             <td th:text="${producto.stock}"/>
                             <td></td>
                             <td class="text-left">
-                                <a th:href="@{/productos/show/} + ${producto.id}" class="btn btn-warning btn-sm"><i class="fa fa-eye"></i> Mostrar</a>
+                                <a th:href="@{/productos/show/} + ${producto.id}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Mostrar</a>
                                 <a th:href="@{/productos/edit/} + ${producto.id}" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Editar</a>
                                 <a th:href="@{/productos/delete/} + ${producto.id}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Eliminar</a>
                             </td>
