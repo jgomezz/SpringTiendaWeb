@@ -38,6 +38,7 @@
                         <th width="300">Acciones</th>
                     </tr>
                     </thead>
+                    <tbody>
                         <tr th:each="producto : ${productos}">
                             <td th:text="${producto.id}"/>
                             <td th:text="${producto.categoria.nombre}"/>
@@ -51,8 +52,6 @@
                                 <a th:href="@{/productos/delete/} + ${producto.id}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Eliminar</a>
                             </td>
                         </tr>
-                    <tbody>
-
                     </tbody>
                 </table>
             </div>
